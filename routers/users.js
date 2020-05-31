@@ -1,12 +1,22 @@
 const db = require('../sql');
 const router = require('express').Router();
+const { userSchema } = require('../models/user');
+const jwt = require('jsonwebtoken');
+const { validate } = require('../joiMiddleware');
 
-const users = [{ id: '5', name: 'itzik' }, { id: '7', name: 'shlomo' }]
 
 router.get('/', (req, res) => {
     // e.g. GET /users/
     res.send(users);
 });
+
+router.post('/register', validate(userSchema), (req, res) => {
+    const { firstName, lastName, email, password } = req.body;
+    const token = jwt.sign({}, process.env.JWT_SECRET);
+    res.send({ token });
+});
+
+
 
 router.get('/search', (req, res) => {
     // e.g. GET /users/search?name=s
