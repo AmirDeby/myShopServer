@@ -13,10 +13,9 @@ const productRouter = require('./routers/products');
 const port = process.env.PORT;
 const JWT_SECRET = 'secret-token';
 
-
 app.use(cors());
 app.use(express.json());
-app.use(expressJwt({ secret: JWT_SECRET }).unless({ path: ['/login', '/users','/users/register'] }));
+app.use(expressJwt({ secret: JWT_SECRET }).unless({ path: ['/users/login', '/users','/users/register'] }));
 
 
 app.use('/users', userRouter);
