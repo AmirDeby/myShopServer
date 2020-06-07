@@ -9,17 +9,19 @@ require('dotenv').config();
 
 const userRouter = require('./routers/users');
 const productRouter = require('./routers/products');
+const cartRouter = require('./routers/cart');
 
 const port = process.env.PORT;
-const JWT_SECRET = 'secret-token';
+const SECRET = process.env.JWT_SECRET;
 
 app.use(cors());
 app.use(express.json());
-app.use(expressJwt({ secret: JWT_SECRET }).unless({ path: ['/users/login', '/users','/users/register'] }));
+app.use(expressJwt({ secret: SECRET }).unless({path: ['/users/login', '/users', '/users/register','/products'] }));
 
 
 app.use('/users', userRouter);
 app.use('/products', productRouter);
+app.use('/cart', cartRouter);
 app.use('*', (req, res) => {
     res.status(404).send('page not found');
 });
