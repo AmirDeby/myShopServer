@@ -28,7 +28,7 @@ router.post('/register', validate(userSchema), async (req, res) => {
     const [result] = await checkIfUserExists(email);
     const [userExist] = result;
     if (userExist) {
-        res.status(400).send('user exist');
+        res.status(403).send('user exist');
         return
     }
     const [response] = await addUser(firstName, lastName, email, password);

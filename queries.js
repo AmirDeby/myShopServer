@@ -22,5 +22,14 @@ const deleteItemFromCart = (id, userId) => {
 const addItemToCart = (produtId, userId, quantity) => {
     return db.execute('INSERT INTO `shop`.`customercart` (`productId`, `userId`, `quantity`) VALUES (?,?,?)', [produtId, userId, quantity])
 }
-
-module.exports = { addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart };
+const getCartItemId = async (userId, productId) => {
+    const [result] = await db.execute('SELECT id,quantity FROM shop.customercart WHERE userId = ?  and productId = ?', [userId, productId]);
+    if (result.length > 0) {
+        return result[0];
+    }
+    return null;
+}
+const updateQuantity = (itemId,quantity) => {
+    return db.execute('UPDATE shop.customercart SET quantity = ? WHERE id = ?', [quantity,itemId])
+}
+module.exports = { addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity};
