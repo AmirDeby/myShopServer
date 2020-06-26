@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity } = require('../queries');
 const { validate } = require('../joiMiddleware');
-const { quantitySchema } = require('../models/cartModel')
+const quantitySchema = require('../models/cartModel');
 
 router.get('/', async (req, res) => {
     const { userId } = req.user;

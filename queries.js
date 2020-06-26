@@ -32,4 +32,7 @@ const getCartItemId = async (userId, productId) => {
 const updateQuantity = (itemId,quantity) => {
     return db.execute('UPDATE shop.customercart SET quantity = ? WHERE id = ?', [quantity,itemId])
 }
-module.exports = { addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity};
+const searchProduct = (keyword) => {
+    return db.execute('SELECT * FROM shop.products WHERE name like ?', [`%${keyword}%`])
+}
+module.exports = { searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity};
