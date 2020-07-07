@@ -29,10 +29,18 @@ const getCartItemId = async (userId, productId) => {
     }
     return null;
 }
-const updateQuantity = (itemId,quantity) => {
-    return db.execute('UPDATE shop.customercart SET quantity = ? WHERE id = ?', [quantity,itemId])
+const updateQuantity = (itemId, quantity) => {
+    return db.execute('UPDATE shop.customercart SET quantity = ? WHERE id = ?', [quantity, itemId])
 }
 const searchProduct = (keyword) => {
     return db.execute('SELECT * FROM shop.products WHERE name like ?', [`%${keyword}%`])
 }
-module.exports = { searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity};
+const addOrder = (userId) => {
+    return db.execute('INSERT INTO `shop`.`orders` (`userId`) VALUES (?)', [userId])
+}
+
+const insertItemIntoOrder = (orderId, productId, quantity) => {
+    return db.execute('INSERT INTO shop.orderitems(orderId,productId,quantity) VALUES(?,?,?)', [orderId, productId, quantity])
+}
+
+module.exports = { addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };

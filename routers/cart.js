@@ -38,5 +38,4 @@ router.post('/:productId', validate(quantitySchema), async (req, res) => {
     res.send('item has been added to cart');
 });
 
-
 module.exports = router 
