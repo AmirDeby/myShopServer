@@ -1,15 +1,28 @@
 const router = require('express').Router();
-const { addOrder, insertItemIntoOrder } = require('../queries');
+const { getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, addOrder, insertItemIntoOrder } = require('../queries');
 
-router.post('/', async (req, res) => {
-    const { productId, quantity } = req.body;
+router.get('/me', async (req, res) => {
     const { userId } = req.user;
-    const [result] = await addOrder(userId);
-    const orderId = result.insertId;
-    await insertItemIntoOrder(orderId, productId, quantity);
-
-    res.send(result)
+    const [orders] = await getOrdersByUser(userId);
+    res.send(orders);
 });
 
+router.post('/', async (req, res) => {
+    const { userId } = req.user;
+
+    const [result] = await addOrder(userId);
+    const orderId = result.insertId;
+
+    await insertItemIntoOrder(orderId, userId);
+    await deleteUserCart(userId);
+
+    res.send(result);
+});
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    const [result] = await getOrderDetailssByOrderId(id);
+    res.send(result);
+});
 
 module.exports = router

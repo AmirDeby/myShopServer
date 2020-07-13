@@ -39,8 +39,22 @@ const addOrder = (userId) => {
     return db.execute('INSERT INTO `shop`.`orders` (`userId`) VALUES (?)', [userId])
 }
 
-const insertItemIntoOrder = (orderId, productId, quantity) => {
-    return db.execute('INSERT INTO shop.orderitems(orderId,productId,quantity) VALUES(?,?,?)', [orderId, productId, quantity])
+const insertItemIntoOrder = (orderId, userId) => {
+    return db.execute(`INSERT INTO shop.orderitems (orderId,productId,quantity) SELECT ?,productId,quantity from shop.customercart where userId=?`, [orderId, userId])
 }
 
-module.exports = { addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
+const deleteUserCart = (userId) => {
+    return db.execute('DELETE FROM `shop`.`customercart` where userId = ?;', [userId]);
+
+}
+const userCartById = (userId) => {
+    return db.execute('SELECT * FROM shop.customercart WHERE userId = ?', [userId]);
+}
+
+const getOrdersByUser = (userId) => {
+    return db.execute('SELECT * FROM shop.orders where userId=?', [userId]);
+}
+const getOrderDetailssByOrderId = (id) => {
+    return db.execute('SELECT * FROM shop.products inner join shop.orderitems On products.id = orderitems.productId where orderId=?', [id])
+}
+module.exports = { getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
