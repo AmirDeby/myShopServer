@@ -3,7 +3,6 @@ const { getProducts, searchProduct } = require('../queries');
 
 router.get('/', async (req, res) => {
     const [products] = await getProducts();
-
     res.send(products);
 });
 

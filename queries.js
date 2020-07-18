@@ -57,4 +57,8 @@ const getOrdersByUser = (userId) => {
 const getOrderDetailssByOrderId = (id) => {
     return db.execute('SELECT * FROM shop.products inner join shop.orderitems On products.id = orderitems.productId where orderId=?', [id])
 }
-module.exports = { getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
+const getOrderDetailsForPdf = (id) => {
+    return db.execute('SELECT name,description,salePrice,orderId FROM shop.products inner join shop.orderitems On products.id = orderitems.productId where orderId=?', [id])
+}
+
+module.exports = { getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
