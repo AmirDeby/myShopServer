@@ -60,5 +60,12 @@ const getOrderDetailssByOrderId = (id) => {
 const getOrderDetailsForPdf = (id) => {
     return db.execute('SELECT name,description,salePrice,orderId FROM shop.products inner join shop.orderitems On products.id = orderitems.productId where orderId=?', [id])
 }
+const getUser = async (userId) => {
+    const [users] = await db.execute('SELECT firstName,lastName,isAdmin FROM shop.users where id=?', [userId]);
+    return users[0];
+}
+const addProduct = (inventory, name, description, image, originalPrice, salePrice, categoryId) => {
+    return db.execute('INSERT INTO `shop`.`products` (`inventory`, `name`, `description`, `image`, `originalPrice`, `salePrice`, `categoryId`) VALUES (?,?,?,?, ?, ?, ?)', [inventory,name, description, image, originalPrice, salePrice, categoryId])
+}
 
-module.exports = { getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
+module.exports = { getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
