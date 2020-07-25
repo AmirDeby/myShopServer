@@ -68,4 +68,4 @@ const addProduct = (inventory, name, description, image, originalPrice, salePric
     return db.execute('INSERT INTO `shop`.`products` (`inventory`, `name`, `description`, `image`, `originalPrice`, `salePrice`, `categoryId`) VALUES (?,?,?,?, ?, ?, ?)', [inventory,name, description, image, originalPrice, salePrice, categoryId])
 }
 
-module.exports = { getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
+module.exports = { addProduct, getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };

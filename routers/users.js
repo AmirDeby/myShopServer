@@ -36,12 +36,13 @@ router.post('/register', validate(userSchema), async (req, res) => {
     }
     const [response] = await addUser(firstName, lastName, email, encryptPass(password));
     const userId = response.insertId;
+    const user = await getUser(userId);
     const token = jwt.sign({ userId }, process.env.JWT_SECRET);
-    res.send({ token, userId });
+    res.send({ token, userId, user });
 });
 
 const encryptPass = (password) => {
-    return crypto.createHash('sha256', 'secret').update(password).digest('hex');
+    return crypto.createHash('sha256', process.env.SECRET).update(password).digest('hex');
 }
 
 module.exports = router;
