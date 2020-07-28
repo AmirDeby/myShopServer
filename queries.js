@@ -67,5 +67,8 @@ const getUser = async (userId) => {
 const addProduct = (inventory, name, description, image, originalPrice, salePrice, categoryId) => {
     return db.execute('INSERT INTO `shop`.`products` (`inventory`, `name`, `description`, `image`, `originalPrice`, `salePrice`, `categoryId`) VALUES (?,?,?,?, ?, ?, ?)', [inventory,name, description, image, originalPrice, salePrice, categoryId])
 }
+const deletetProduct = (id) => {
+    return db.execute('DELETE FROM shop.products WHERE(id =?)', [id]);
+}
 
-module.exports = { addProduct, getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
+module.exports = { deletetProduct, addProduct, getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };

@@ -9,7 +9,6 @@ const crypto = require('crypto');
 router.get('/me', async (req, res) => {
     const { userId } = req.user;
     const user = await getUser(userId);
-    console.log(user);
     res.send(user);
 });
 

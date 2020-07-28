@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getProducts, searchProduct, addProduct } = require('../queries');
+const { getProducts, searchProduct, addProduct, deletetProduct } = require('../queries');
 
 router.get('/', async (req, res) => {
     const [products] = await getProducts();
@@ -19,5 +19,10 @@ router.post('/add', async (req, res) => {
     res.send(product)
 });
 
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    await deletetProduct(id);
+    res.send(id);
+})
 
 module.exports = router;
