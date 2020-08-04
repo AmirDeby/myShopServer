@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { validate } = require('../joiMiddleware');
 const { getUser, addUser, checkIfUserExists, login } = require('../queries')
 const crypto = require('crypto');
+const sendEmail = require('./email');
 
 router.get('/me', async (req, res) => {
     const { userId } = req.user;
@@ -33,11 +34,19 @@ router.post('/register', validate(userSchema), async (req, res) => {
         res.status(403).send('user exist');
         return
     }
-    const [response] = await addUser(firstName, lastName, email, encryptPass(password));
-    const userId = response.insertId;
-    const user = await getUser(userId);
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
-    res.send({ token, userId, user });
+    try {
+        const [response] = await addUser(firstName, lastName, email, encryptPass(password));
+        sendEmail(email);
+        const userId = response.insertId;
+        const user = await getUser(userId);
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+
+        res.send({ token, userId, user });
+    }
+    catch (e) {
+        return res.status(500).send(e);
+    }
+
 });
 
 const encryptPass = (password) => {

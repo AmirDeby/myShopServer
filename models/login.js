@@ -6,6 +6,4 @@ const loginSchema = Joi.object({
     password: Joi.string().required().error(() => new Error('password must be a string')),
 });
 
-
-
 module.exports = { loginSchema }

@@ -15,7 +15,6 @@ router.post('/search', async (req, res) => {
 router.post('/add', async (req, res) => {
     const { inventory, name, description, image, originalPrice, salePrice, categoryId } = req.body;
     const [product] = await addProduct(inventory, name, description, image, originalPrice, salePrice, categoryId);
-    console.log(product);
     res.send(product)
 });
 
