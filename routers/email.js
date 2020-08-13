@@ -6,9 +6,9 @@ const sendEmail = async (email) => {
     const msg = {
         to: email,
         from: 'goleramir@gmail.com',
-        subject: 'Whisky Shop',
+        subject: 'Registrtion to Whisky Shop',
         text: 'Thank you for Register our shop !',
-        html: '<strong>Thank you for Register our shop !</strong>',
+        html: '<strong>WhiskyShop account team</strong>',
     }
 
     return sgMail.send(msg);

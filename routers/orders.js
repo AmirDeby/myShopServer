@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
-const { getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, addOrder, insertItemIntoOrder } = require('../queries');
+const { getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, getCart, addOrder, addItemsToOrder, updateInventory } = require('../queries');
 const { exportOrderToPdf } = require('./pdf');
 
 router.get('/me', async (req, res) => {
@@ -15,8 +15,14 @@ router.post('/', async (req, res) => {
 
     const [result] = await addOrder(userId);
     const orderId = result.insertId;
+    const [userCart] = await getCart(userId);
 
-    await insertItemIntoOrder(orderId, userId);
+    for (let i = 0; i < userCart.length; i++) {
+        const { quantity, productId } = userCart[i];
+        await updateInventory(quantity, productId);
+    }
+
+    await addItemsToOrder(orderId, userId);
     await deleteUserCart(userId);
 
     res.send(result);

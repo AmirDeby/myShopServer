@@ -29,6 +29,9 @@ const getCartItemId = async (userId, productId) => {
     }
     return null;
 }
+const updateInventory = (quantity, id) => {
+    return db.execute('update shop.products set inventory = inventory - ? where id=?', [quantity, id])
+}
 const updateQuantity = (itemId, quantity) => {
     return db.execute('UPDATE shop.customercart SET quantity = ? WHERE id = ?', [quantity, itemId])
 }
@@ -39,7 +42,7 @@ const addOrder = (userId) => {
     return db.execute('INSERT INTO `shop`.`orders` (`userId`) VALUES (?)', [userId])
 }
 
-const insertItemIntoOrder = (orderId, userId) => {
+const addItemsToOrder = (orderId, userId) => {
     return db.execute(`INSERT INTO shop.orderitems (orderId,productId,quantity) SELECT ?,productId,quantity from shop.customercart where userId=?`, [orderId, userId])
 }
 
@@ -71,4 +74,4 @@ const deletetProduct = (id) => {
     return db.execute('DELETE FROM shop.products WHERE(id =?)', [id]);
 }
 
-module.exports = { deletetProduct, addProduct, getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
+module.exports = { addItemsToOrder,updateInventory, deletetProduct, addProduct, getUser, getOrderDetailsForPdf, getOrderDetailssByOrderId, getOrdersByUser, deleteUserCart, userCartById, addOrder, insertItemIntoOrder: addItemsToOrder, searchProduct, addUser, checkIfUserExists, login, getProducts, getCart, deleteItemFromCart, addItemToCart, getCartItemId, updateQuantity };
